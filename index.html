@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PULSA · Case Study | DarkCat Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0b0c;
+    --surface:#141416;
+    --surface-raised:#1d1d20;
+    --border:#2a2a2f;
+    --text-primary:#f2f2f5;
+    --text-secondary:#9a9aa2;
+    --text-tertiary:#68686f;
+    --pink:#ff2d78;
+    --pink-dim:#ff2d7822;
+    --green:#22c55e;
+    --amber:#f5a623;
+    --mono:'IBM Plex Mono', monospace;
+    --sans:'Inter', sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text-primary);
+    font-family:var(--sans);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  img,svg{display:block;max-width:100%;}
+  a{color:inherit;}
+
+  .wrap{max-width:1120px;margin:0 auto;padding:0 32px;}
+  section{padding:96px 0;}
+  @media (max-width:720px){
+    section{padding:64px 0;}
+    .wrap{padding:0 20px;}
+  }
+
+  /* ---------- Top bar ---------- */
+  .topbar{
+    position:sticky;top:0;z-index:50;
+    background:rgba(11,11,12,0.85);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);
+  }
+  .topbar .wrap{
+    display:flex;align-items:center;justify-content:space-between;
+    padding-top:18px;padding-bottom:18px;
+  }
+  .brand-tag{
+    font-family:var(--mono);
+    font-size:12px;
+    letter-spacing:0.06em;
+    color:var(--text-secondary);
+    text-transform:uppercase;
+  }
+  .brand-tag b{color:var(--text-primary);font-weight:600;}
+  .topbar nav{display:flex;gap:28px;font-size:13px;color:var(--text-secondary);}
+  .topbar nav a{text-decoration:none;transition:color .15s;}
+  .topbar nav a:hover{color:var(--pink);}
+  @media (max-width:720px){.topbar nav{display:none;}}
+
+  /* ---------- Hero ---------- */
+  .hero{padding:120px 0 80px;position:relative;overflow:hidden;}
+  .hero .eyebrow{
+    font-family:var(--mono);font-size:12px;letter-spacing:0.08em;
+    color:var(--pink);text-transform:uppercase;margin-bottom:24px;
+    display:flex;align-items:center;gap:10px;
+  }
+  .hero .eyebrow::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--pink);box-shadow:0 0 12px var(--pink);}
+  .hero h1{
+    font-size:clamp(48px,9vw,104px);
+    font-weight:800;
+    letter-spacing:-0.03em;
+    line-height:0.95;
+    margin-bottom:20px;
+  }
+  .hero .tagline{
+    font-size:clamp(16px,2.2vw,22px);
+    color:var(--text-secondary);
+    font-weight:500;
+    max-width:640px;
+    margin-bottom:28px;
+  }
+  .hero .desc{
+    font-size:16px;color:var(--text-secondary);max-width:620px;margin-bottom:40px;
+  }
+  .hero-pulse{width:100%;height:120px;margin:32px 0 8px;}
+  .hero-pulse path{
+    stroke:var(--pink);stroke-width:2.5;fill:none;
+    stroke-linecap:round;stroke-linejoin:round;
+    filter:drop-shadow(0 0 8px rgba(255,45,120,0.5));
+  }
+  .hero-meta{
+    display:flex;gap:48px;flex-wrap:wrap;
+    padding-top:32px;border-top:1px solid var(--border);
+    font-family:var(--mono);font-size:12px;
+  }
+  .hero-meta div span{display:block;color:var(--text-tertiary);margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em;}
+  .hero-meta div b{color:var(--text-primary);font-family:var(--sans);font-size:14px;font-weight:600;}
+
+  /* ---------- Section headers ---------- */
+  .section-head{margin-bottom:48px;}
+  .section-head .num{
+    font-family:var(--mono);font-size:12px;color:var(--pink);
+    letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px;display:block;
+  }
+  .section-head h2{font-size:clamp(28px,4vw,40px);font-weight:800;letter-spacing:-0.02em;max-width:680px;}
+  .section-head p{color:var(--text-secondary);margin-top:14px;max-width:560px;font-size:15px;}
+
+  /* ---------- O que é ---------- */
+  .what-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;margin-bottom:64px;}
+  @media (max-width:800px){.what-grid{grid-template-columns:1fr;}}
+  .what-grid h3{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--pink);margin-bottom:14px;font-family:var(--mono);}
+  .what-grid p{color:var(--text-secondary);font-size:15px;}
+
+  .persona-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  @media (max-width:900px){.persona-grid{grid-template-columns:1fr;}}
+  .persona-card{
+    background:var(--surface);border:1px solid var(--border);border-radius:16px;
+    padding:28px;
+  }
+  .persona-card .avatar{
+    width:44px;height:44px;border-radius:50%;
+    background:var(--pink-dim);color:var(--pink);
+    display:flex;align-items:center;justify-content:center;
+    font-weight:700;font-size:15px;margin-bottom:18px;
+  }
+  .persona-card h4{font-size:17px;font-weight:700;margin-bottom:2px;}
+  .persona-card .role{font-size:12px;color:var(--text-tertiary);font-family:var(--mono);margin-bottom:14px;}
+  .persona-card .jtbd{
+    font-size:13.5px;color:var(--text-secondary);
+    border-left:2px solid var(--pink);padding-left:12px;font-style:italic;
+  }
+
+  /* ---------- Research ---------- */
+  .stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:40px;}
+  @media (max-width:800px){.stat-grid{grid-template-columns:repeat(2,1fr);}}
+  .stat-card{background:var(--surface);padding:28px 24px;}
+  .stat-card .num{font-size:34px;font-weight:800;color:var(--pink);letter-spacing:-0.02em;}
+  .stat-card .lbl{font-size:12.5px;color:var(--text-secondary);margin-top:8px;}
+
+  .insight-card{
+    background:var(--surface-raised);border:1px solid var(--border);border-radius:16px;
+    padding:32px;display:flex;gap:24px;align-items:flex-start;
+  }
+  @media (max-width:640px){.insight-card{flex-direction:column;}}
+  .insight-card .tag{
+    font-family:var(--mono);font-size:11px;color:var(--amber);
+    background:rgba(245,166,35,0.1);border:1px solid rgba(245,166,35,0.3);
+    padding:4px 10px;border-radius:20px;white-space:nowrap;text-transform:uppercase;letter-spacing:.04em;
+  }
+  .insight-card p{color:var(--text-secondary);font-size:14.5px;}
+  .insight-card p b{color:var(--text-primary);font-weight:600;}
+
+  /* ---------- Journeys ---------- */
+  .journey-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+  @media (max-width:900px){.journey-grid{grid-template-columns:1fr 1fr;}}
+  @media (max-width:520px){.journey-grid{grid-template-columns:1fr;}}
+  .journey-card{
+    background:var(--surface);border:1px solid var(--border);border-radius:16px;
+    padding:24px;position:relative;
+  }
+  .journey-card .n{
+    font-family:var(--mono);font-size:12px;color:var(--text-tertiary);margin-bottom:16px;
+  }
+  .journey-card h4{font-size:16px;font-weight:700;margin-bottom:10px;line-height:1.3;}
+  .journey-card p{font-size:13px;color:var(--text-secondary);}
+
+  /* ---------- Screens ---------- */
+  .phone-row{display:flex;gap:28px;overflow-x:auto;padding:12px 4px 24px;scrollbar-width:thin;}
+  .phone-row::-webkit-scrollbar{height:6px;}
+  .phone-row::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px;}
+  .phone{
+    flex:0 0 220px;
+    position:relative;
+    padding:16px 11px 24px;
+    background:linear-gradient(160deg,#3d3d42,#18181a 45%,#08080a);
+    border-radius:42px;
+    box-shadow:0 30px 60px -20px rgba(0,0,0,0.65), inset 0 0 0 1px rgba(255,255,255,0.05);
+  }
+  .phone::before{
+    content:'';
+    position:absolute;top:16px;left:50%;transform:translateX(-50%);
+    width:64px;height:16px;background:#000;border-radius:9px;z-index:3;
+  }
+  .phone::after{
+    content:'';
+    position:absolute;bottom:9px;left:50%;transform:translateX(-50%);
+    width:76px;height:4px;background:rgba(255,255,255,0.22);border-radius:3px;z-index:3;
+  }
+  .phone .screen{
+    background:#0f0f11;
+    border-radius:28px;
+    overflow:hidden;
+    position:relative;
+    display:flex;flex-direction:column;
+  }
+  .phone-real{
+    border-radius:32px;
+    overflow:hidden;
+    box-shadow:0 30px 60px -20px rgba(0,0,0,0.65);
+    border:1px solid var(--border);
+  }
+  .phone .p-status{
+    font-family:var(--mono);font-size:10px;color:var(--text-tertiary);
+    display:flex;justify-content:space-between;padding:10px 16px 0;
+  }
+  .phone .p-header{
+    padding:12px 16px;border-bottom:1px solid var(--border);
+    display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600;
+  }
+  .phone .p-header .back{width:20px;height:20px;border-radius:6px;background:var(--surface-raised);flex:0 0 auto;}
+  .phone .p-body{padding:18px 16px;min-height:340px;display:flex;flex-direction:column;gap:14px;}
+  .phone-caption{margin-top:14px;text-align:center;}
+  .phone-caption .t{font-size:13px;font-weight:600;}
+  .phone-caption .d{font-size:11.5px;color:var(--text-tertiary);font-family:var(--mono);margin-top:2px;}
+
+  .p-block{background:var(--surface-raised);border-radius:10px;height:52px;}
+  .p-block.sm{height:36px;}
+  .p-block.tall{height:80px;}
+  .p-btn{
+    background:var(--pink);color:#fff;text-align:center;font-size:13px;font-weight:700;
+    border-radius:12px;padding:13px;margin-top:auto;
+  }
+  .p-btn.ghost{background:transparent;border:1px solid var(--pink);color:var(--pink);}
+  .p-btn.disabled{background:var(--surface-raised);color:var(--text-tertiary);}
+  .p-link{font-size:11.5px;color:var(--pink);text-align:center;}
+  .p-icon-circle{
+    width:64px;height:64px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    margin:14px auto 4px;font-size:26px;
+  }
+  .p-icon-circle.ok{background:var(--pink);}
+  .p-icon-circle.warn{background:rgba(245,166,35,0.12);border:1.5px solid var(--amber);color:var(--amber);}
+  .p-title-c{text-align:center;font-size:16px;font-weight:700;}
+  .p-sub-c{text-align:center;font-size:12px;color:var(--text-secondary);}
+  .p-value{text-align:center;font-size:22px;font-weight:800;}
+  .p-value.pos{color:var(--green);}
+  .p-tag-row{display:flex;gap:8px;}
+  .p-tag{font-size:10.5px;font-family:var(--mono);background:var(--surface-raised);padding:5px 9px;border-radius:20px;color:var(--text-secondary);flex:1;text-align:center;}
+  .p-tag.active{background:var(--pink);color:#fff;}
+  .p-list-row{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;}
+  .p-list-row .l{color:var(--text-secondary);}
+  .p-list-row .r{font-weight:600;}
+  .p-list-row .r.pos{color:var(--green);}
+  .p-pulse-mini{height:40px;margin:6px 0;}
+  .p-pulse-mini path{stroke:var(--pink);stroke-width:2;fill:none;}
+
+  .p-dashed{border:1px dashed var(--border);border-radius:12px;height:76px;display:flex;align-items:center;justify-content:center;color:var(--text-tertiary);font-size:10.5px;text-align:center;padding:8px;}
+  .p-dashed.circle{border-radius:50%;width:104px;height:104px;margin:4px auto;}
+  .p-check-row{display:flex;align-items:center;gap:9px;font-size:11.5px;color:var(--text-secondary);}
+  .p-check-row.pending{color:var(--text-tertiary);}
+  .p-dot{width:15px;height:15px;border-radius:50%;flex:0 0 auto;display:flex;align-items:center;justify-content:center;font-size:9px;color:#fff;}
+  .p-dot.done{background:var(--pink);}
+  .p-dot.active{border:2px solid var(--pink);}
+  .p-dot.pending{background:var(--surface-raised);}
+  .p-badge{display:inline-block;font-size:10px;background:rgba(34,197,94,0.12);color:var(--green);border:1px solid rgba(34,197,94,0.3);padding:3px 10px;border-radius:20px;align-self:flex-start;}
+  .p-tabs{display:flex;justify-content:space-around;padding-top:10px;border-top:1px solid var(--border);margin-top:auto;}
+  .p-tab{font-size:8.5px;color:var(--text-tertiary);display:flex;flex-direction:column;align-items:center;gap:4px;}
+  .p-tab .ic{width:15px;height:15px;border-radius:4px;background:var(--surface-raised);}
+  .p-tab.active{color:var(--pink);}
+  .p-tab.active .ic{background:var(--pink);}
+  .p-avatar-lg{width:46px;height:46px;border-radius:50%;background:var(--pink-dim);color:var(--pink);display:flex;align-items:center;justify-content:center;font-weight:700;margin:0 auto;font-size:14px;}
+  .p-card-opt{border:1px solid var(--border);border-radius:12px;padding:12px;}
+  .p-card-opt .t{font-size:12px;font-weight:700;}
+  .p-card-opt .s{font-size:10.5px;color:var(--text-secondary);margin-top:2px;}
+  .p-row-plain{font-size:11.5px;color:var(--text-secondary);padding:9px 0;border-bottom:1px solid var(--border);}
+
+  .journey-block{margin-bottom:56px;}
+  .journey-block:last-child{margin-bottom:0;}
+  .journey-block .jb-head{display:flex;align-items:baseline;gap:12px;margin-bottom:20px;}
+  .journey-block .jb-head .jn{font-family:var(--mono);font-size:11px;color:var(--pink);}
+  .journey-block .jb-head h3{font-size:18px;font-weight:700;}
+  .journey-block .jb-head .jc{font-family:var(--mono);font-size:11px;color:var(--text-tertiary);}
+  .phone-grid{display:flex;flex-wrap:wrap;gap:24px;}
+  .phone-grid .phone,.phone-grid .phone-real{flex:0 0 220px;}
+  .phone-grid .phone .p-body{min-height:300px;padding:16px 14px;gap:11px;}
+  .phone-grid .phone .p-header{padding:10px 14px;font-size:12px;}
+  .edge-tag{display:inline-block;font-family:var(--mono);font-size:9.5px;color:var(--amber);background:rgba(245,166,35,0.1);border:1px solid rgba(245,166,35,0.25);padding:2px 8px;border-radius:10px;margin-top:6px;text-transform:uppercase;letter-spacing:.03em;}
+
+  /* ---------- Design system ---------- */
+  .swatch-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:16px;}
+  @media (max-width:900px){.swatch-grid{grid-template-columns:repeat(3,1fr);}}
+  @media (max-width:520px){.swatch-grid{grid-template-columns:repeat(2,1fr);}}
+  .swatch{border:1px solid var(--border);border-radius:14px;overflow:hidden;}
+  .swatch .chip{height:76px;}
+  .swatch .label{padding:12px 14px;background:var(--surface);}
+  .swatch .label .name{font-size:12.5px;font-weight:600;}
+  .swatch .label .hex{font-family:var(--mono);font-size:11px;color:var(--text-tertiary);margin-top:2px;}
+
+  .type-specimen{border-top:1px solid var(--border);padding:28px 0;display:grid;grid-template-columns:200px 1fr;gap:24px;align-items:baseline;}
+  @media (max-width:640px){.type-specimen{grid-template-columns:1fr;gap:8px;}}
+  .type-specimen .meta{font-family:var(--mono);font-size:12px;color:var(--text-secondary);}
+  .type-specimen .meta b{display:block;color:var(--text-primary);font-family:var(--sans);font-size:13px;font-weight:600;margin-bottom:4px;}
+  .type-specimen .sample{color:var(--text-primary);}
+
+  .btn-row{display:flex;gap:16px;flex-wrap:wrap;margin-top:32px;}
+  .demo-btn{padding:14px 28px;border-radius:24px;font-size:14px;font-weight:700;}
+  .demo-btn.primary{background:var(--pink);color:#fff;}
+  .demo-btn.outline{border:1.5px solid var(--pink);color:var(--pink);}
+  .demo-btn.disabled{background:var(--surface-raised);color:var(--text-tertiary);}
+
+  /* ---------- Decisions ---------- */
+  .decision-list{display:flex;flex-direction:column;}
+  .decision{
+    display:grid;grid-template-columns:64px 1fr;gap:24px;
+    padding:32px 0;border-top:1px solid var(--border);
+  }
+  .decision:last-child{border-bottom:1px solid var(--border);}
+  .decision .n{font-family:var(--mono);font-size:13px;color:var(--pink);}
+  .decision h4{font-size:18px;font-weight:700;margin-bottom:10px;}
+  .decision p{color:var(--text-secondary);font-size:14.5px;max-width:640px;}
+
+  /* ---------- Footer ---------- */
+  footer{
+    border-top:1px solid var(--border);padding:48px 0;
+    display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;
+  }
+  footer .f-brand{font-weight:700;font-size:14px;}
+  footer .f-sub{font-family:var(--mono);font-size:11.5px;color:var(--text-tertiary);}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <div class="brand-tag">DarkCat Studio <span style="color:var(--text-tertiary)">//</span> <b>Case Study</b></div>
+    <nav>
+      <a href="#produto">Produto</a>
+      <a href="#pesquisa">Pesquisa</a>
+      <a href="#jornadas">Jornadas</a>
+      <a href="#telas">Telas</a>
+      <a href="#sistema">Sistema</a>
+    </nav>
+  </div>
+</div>
+
+<header class="hero wrap">
+  <div class="eyebrow">Fintech · Produto digital regulado</div>
+  <h1>PULSA</h1>
+  <p class="tagline">Crédito que acompanha o seu ritmo.</p>
+  <p class="desc">Carteira digital, cartão e crédito para freelancers, autônomos e MEIs com renda variável, pensado pra quem o sistema bancário tradicional avalia errado. Um case de produto completo: pesquisa, personas, jornadas críticas, fluxos regulados e sistema de design, do zero ao protótipo navegável.</p>
+
+  <svg class="hero-pulse" viewBox="0 0 700 100" preserveAspectRatio="none">
+    <path d="M 0 50 L 220 50 L 250 15 L 280 85 L 310 25 L 340 50 L 700 50" />
+  </svg>
+
+  <div class="hero-meta">
+    <div><span>Papel</span><b>UX/UI · Pesquisa · Produto</b></div>
+    <div><span>Escopo</span><b>47 telas · 4 jornadas críticas</b></div>
+    <div><span>Ferramentas</span><b>Figma · Figma AI</b></div>
+    <div><span>Ano</span><b>2026</b></div>
+  </div>
+</header>
+
+<section id="produto">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="num">01 / O que é</span>
+      <h2>Crédito desenhado pra quem não tem holerite</h2>
+    </div>
+
+    <div class="what-grid">
+      <div>
+        <h3>Propósito</h3>
+        <p>O Pulsa resolve a ilegibilidade financeira de quem vive de renda variável. MEIs, autônomos e freelancers têm renda real, só que o sistema bancário tradicional avalia crédito por comprovantes que não existem pra esse público (holerite, DASN atualizada). O Pulsa analisa por fluxo de caixa real, não por papelada desatualizada, e é transparente sobre cada decisão que toma.</p>
+      </div>
+      <div>
+        <h3>Como funciona</h3>
+        <p>Carteira digital com cartão virtual e físico, recarga via Pix ou em pontos físicos parceiros (lotéricas, farmácias, mercados), limite de crédito recalculado com base em documentação recente, e um fluxo de contestação de transações com prazo regulatório sempre visível.</p>
+      </div>
+    </div>
+
+    <h3 style="margin-bottom:20px;">Público-alvo</h3>
+    <div class="persona-grid">
+      <div class="persona-card">
+        <div class="avatar">BC</div>
+        <h4>Bianca, 29</h4>
+        <div class="role">Criadora de conteúdo · MEI</div>
+        <p class="jtbd">"Quando fecho uma parceria grande, quero que meu limite reflita isso rápido, pra investir no meu trabalho sem esperar."</p>
+      </div>
+      <div class="persona-card">
+        <div class="avatar">MS</div>
+        <h4>Marcos, 41</h4>
+        <div class="role">Motorista de app · Autônomo</div>
+        <p class="jtbd">"Quando termino o dia, quero meu dinheiro disponível na hora, sem esperar compensação, pra não entrar no vermelho."</p>
+      </div>
+      <div class="persona-card">
+        <div class="avatar">RC</div>
+        <h4>Renata, 35</h4>
+        <div class="role">Designer freelancer · PJ</div>
+        <p class="jtbd">"Quando minha renda recente é melhor do que minha declaração anual mostra, quero provar isso sem burocracia."</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="pesquisa" style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="num">02 / Pesquisa</span>
+      <h2>O problema é grande, e a causa é estrutural</h2>
+      <p>Dados do IBGE (PNAD Contínua) mostram que o público do Pulsa representa quase 40% da força de trabalho brasileira, mal servida pelo sistema bancário tradicional.</p>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-card"><div class="num">37,5%</div><div class="lbl">da força de trabalho brasileira está na informalidade</div></div>
+      <div class="stat-card"><div class="num">38,5M</div><div class="lbl">trabalhadores informais no Brasil</div></div>
+      <div class="stat-card"><div class="num">26,2M</div><div class="lbl">trabalham por conta própria</div></div>
+      <div class="stat-card"><div class="num">13M+</div><div class="lbl">MEIs ativos, a maioria sem holerite</div></div>
+    </div>
+
+    <div class="insight-card">
+      <span class="tag">Insight de pesquisa</span>
+      <p>A causa raiz é <b>ilegibilidade financeira</b>. Bancos tradicionais recusam crédito porque a taxa mensal do MEI não prova o faturamento real. Fintechs mais avançadas já usam <b>Open Finance e comportamento financeiro</b> pra avaliar esse público, mas a maioria ainda pede DASN-SIMEI, uma declaração <b>anual</b>, enquanto exige comprovação dos últimos 3 a 6 meses. Esse descompasso entre documentação disponível e exigida é a dor central que o Pulsa resolve.</p>
+    </div>
+  </div>
+</section>
+
+<section id="jornada-mapa">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="num">03 / Mapa de jornada</span>
+      <h2>O momento de maior dor: recusa sem explicação</h2>
+      <p>Mapeamos a jornada atual da Renata com um banco tradicional, da necessidade até a resposta, pra identificar exatamente onde o sistema falha com esse público.</p>
+    </div>
+
+    <div class="insight-card" style="border-color:rgba(255,45,120,0.3);">
+      <span class="tag" style="color:var(--pink);background:var(--pink-dim);border-color:rgba(255,45,120,0.3);">Peak negativo</span>
+      <p>Renata solicita financiamento com renda recente ótima, mas sua DASN-SIMEI (anual) mostra um número desatualizado. O banco recusa com um <b>e-mail automático, sem explicação acionável</b>. Ela não sabe o que fazer a seguir. <b>Esse único momento definiu duas das quatro jornadas críticas do Pulsa:</b> explicabilidade na decisão de crédito e comprovação de renda por documento recente.</p>
+    </div>
+  </div>
+</section>
+
+<section id="jornadas" style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="num">04 / Jornadas críticas</span>
+      <h2>Quatro fluxos, todos desenhados para produto regulado</h2>
+      <p>Cada jornada foi mapeada com research, wireframes, edge cases e prototipação, pensando em compliance desde o primeiro rascunho.</p>
+    </div>
+
+    <div class="journey-grid">
+      <div class="journey-card">
+        <div class="n">01 / 04</div>
+        <h4>Onboarding + KYC</h4>
+        <p>Cadastro, biometria facial, validação de identidade, com caminho claro em toda reprovação. Nunca um beco sem saída.</p>
+      </div>
+      <div class="journey-card">
+        <div class="n">02 / 04</div>
+        <h4>Recarga omnichannel</h4>
+        <p>Pix instantâneo ou pagamento em ponto físico parceiro. Dois caminhos convergindo no mesmo saldo, com status sempre visível.</p>
+      </div>
+      <div class="journey-card">
+        <div class="n">03 / 04</div>
+        <h4>Solicitação de crédito</h4>
+        <p>Análise por documentação recente, Open Finance opcional, e recusa sempre com motivo específico + próxima ação.</p>
+      </div>
+      <div class="journey-card">
+        <div class="n">04 / 04</div>
+        <h4>Contestação de transação</h4>
+        <p>Prazo regulatório de 10 dias úteis sempre visível, com caminho de recurso quando a decisão é improcedente.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="telas">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="num">05 / Telas</span>
+      <h2>As 47 telas, jornada por jornada</h2>
+      <p>32 telas de estado feliz + 15 edge cases documentados, cobrindo onboarding regulado, recarga omnichannel, decisão de crédito e contestação de transação.</p>
+    </div>
+    <div id="journeys-mount"></div>
+  </div>
+</section>
+
+<section id="sistema" style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="num">06 / Assets</span>
+      <h2>Sistema de Design</h2>
+    </div>
+
+    <h3 style="font-family:var(--mono);font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--pink);margin-bottom:20px;">Paleta de cores</h3>
+    <div class="swatch-grid">
+      <div class="swatch"><div class="chip" style="background:#0b0b0c;"></div><div class="label"><div class="name">bg/base</div><div class="hex">#0B0B0C</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#1D1D20;"></div><div class="label"><div class="name">surface</div><div class="hex">#1D1D20</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#FF2D78;"></div><div class="label"><div class="name">accent/pink</div><div class="hex">#FF2D78</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#22C55E;"></div><div class="label"><div class="name">success</div><div class="hex">#22C55E</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#F5A623;"></div><div class="label"><div class="name">warning</div><div class="hex">#F5A623</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#9A9AA2;"></div><div class="label"><div class="name">text/secondary</div><div class="hex">#9A9AA2</div></div></div>
+    </div>
+
+    <h3 style="font-family:var(--mono);font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--pink);margin:48px 0 4px;">Tipografia</h3>
+    <div class="type-specimen">
+      <div class="meta"><b>Display / Inter Extrabold</b>Títulos, valores em destaque</div>
+      <div class="sample" style="font-size:36px;font-weight:800;letter-spacing:-0.02em;">Limite aprovado</div>
+    </div>
+    <div class="type-specimen">
+      <div class="meta"><b>Corpo em destaque / Inter Bold</b>CTAs, labels de tela</div>
+      <div class="sample" style="font-size:18px;font-weight:700;">Continuar</div>
+    </div>
+    <div class="type-specimen">
+      <div class="meta"><b>Texto de corpo / Inter Regular</b>Parágrafos, descrições</div>
+      <div class="sample" style="font-size:15px;color:var(--text-secondary);">Isso costuma levar menos de 1 minuto.</div>
+    </div>
+    <div class="type-specimen">
+      <div class="meta"><b>Dados / IBM Plex Mono</b>IDs, protocolos, valores técnicos</div>
+      <div class="sample" style="font-family:var(--mono);font-size:14px;color:var(--text-secondary);">PLS-2026-08110234</div>
+    </div>
+
+    <h3 style="font-family:var(--mono);font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--pink);margin:48px 0 4px;">Botões</h3>
+    <div class="btn-row">
+      <div class="demo-btn primary">Ação principal</div>
+      <div class="demo-btn outline">Ação secundária</div>
+      <div class="demo-btn disabled">Desabilitado</div>
+    </div>
+    <p style="color:var(--text-secondary);font-size:14px;max-width:600px;margin-top:20px;">Formato pill, preenchimento sólido em rosa para CTAs primárias, contorno para ações secundárias e cinza neutro para estados desabilitados. Hierarquia clara mesmo em telas com múltiplas ações, como nos edge cases de KYC e crédito.</p>
+  </div>
+</section>
+
+<section id="decisoes">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="num">07 / Decisões de UI/UX</span>
+      <h2>Por que o Pulsa parece do jeito que parece</h2>
+    </div>
+
+    <div class="decision-list">
+      <div class="decision">
+        <div class="n">01</div>
+        <div>
+          <h4>Tema escuro como padrão de confiança</h4>
+          <p>Fundo quase preto (#0B0B0C) com um único acento vibrante (rosa) transmite seriedade fintech sem parecer banco tradicional engessado, e reduz fadiga visual em quem confere saldo várias vezes ao dia, como motoristas de app entre corridas.</p>
+        </div>
+      </div>
+      <div class="decision">
+        <div class="n">02</div>
+        <div>
+          <h4>Nenhuma decisão negativa sem explicação acionável</h4>
+          <p>Recusa de crédito, contestação improcedente, KYC reprovado. Toda resposta negativa no Pulsa vem com o motivo específico e o próximo passo possível. Essa regra nasceu direto do momento de maior dor no mapa de jornada da Renata.</p>
+        </div>
+      </div>
+      <div class="decision">
+        <div class="n">03</div>
+        <div>
+          <h4>Prazos regulatórios sempre visíveis</h4>
+          <p>Contestação de transação mostra "até 10 dias úteis" desde a abertura. Análise de crédito mostra tempo estimado. Nenhum processo fica em caixa-preta, o que é exigência de compliance e também reduz ansiedade do usuário.</p>
+        </div>
+      </div>
+      <div class="decision">
+        <div class="n">04</div>
+        <div>
+          <h4>Open Finance é sempre opcional</h4>
+          <p>Conectar outras contas melhora a análise, mas nunca é obrigatório. Reforça consentimento real, alinhado à LGPD.</p>
+        </div>
+      </div>
+      <div class="decision">
+        <div class="n">05</div>
+        <div>
+          <h4>Estados intermediários no resultado da análise</h4>
+          <p>"Aprovado parcial" existe como resultado legítimo. Recarga tem um estado real de "processando". Isso reflete como o dinheiro de fato se comporta pra esse público.</p>
+        </div>
+      </div>
+      <div class="decision">
+        <div class="n">06</div>
+        <div>
+          <h4>Edge cases desenhados desde a pesquisa, não depois</h4>
+          <p>Código expirado, divergência de valor, contestação duplicada, reenvio bloqueado. Cada um dos 15 edge cases documentados no case nasceu de uma pergunta feita ainda na fase de fluxos, antes de qualquer wireframe pronto.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;width:100%;">
+    <div class="f-brand">PULSA · Case Study by DarkCat Studio</div>
+    <div class="f-sub">darkcatstudio.com.br</div>
+  </div>
+</footer>
+
+<script>
+const JOURNEYS = [
+  { id:'onboarding', label:'Onboarding + KYC', count:12 },
+  { id:'core', label:'Core do app', count:6 },
+  { id:'recarga', label:'Recarga omnichannel', count:9 },
+  { id:'credito', label:'Solicitação de crédito', count:10 },
+  { id:'contestacao', label:'Contestação de transação', count:10 },
+];
+
+const SCREENS = [
+  // ---------- ONBOARDING + KYC ----------
+  { j:'onboarding', name:'Boas-vindas / criar conta', img:'assets/boas-vindas.png', hero:true,
+    footer:{primary:'Criar conta', link:'Já tenho conta · Entrar'} },
+  { j:'onboarding', name:'Dados básicos', img:'assets/dados-basicos.png', header:{type:'progress', step:'Passo 1 de 3', back:true},
+    title:'Vamos te conhecer', subtitle:'Alguns dados básicos pra começar', blocks:{count:4},
+    footer:{primary:'Continuar', state:'disabled'} },
+  { j:'onboarding', name:'Captura de documento', img:'assets/captura-documento.png', header:{type:'progress', step:'Passo 2 de 3', back:true},
+    title:'Foto do seu documento', subtitle:'RG ou CNH, frente e verso legíveis', blocks:{count:1, variant:'dashed', label:'Toque para fotografar'},
+    footer:{primary:'Continuar', state:'disabled'} },
+  { j:'onboarding', name:'Captura de selfie', img:'assets/captura-selfie.png', header:{type:'progress', step:'Passo 2 de 3', back:true},
+    title:'Agora, uma selfie', subtitle:'Vamos confirmar que é você mesmo', blocks:{count:1, variant:'circle', label:'Toque para fotografar'},
+    footer:{primary:'Continuar', state:'disabled'} },
+  { j:'onboarding', name:'Feedback de captura ruim', edge:true, img:'assets/feedback-captura-ruim.png', header:{type:'progress', step:'Passo 2 de 3', back:true},
+    icon:'warn', title:'Não conseguimos ler sua foto', subtitle:'A imagem ficou com pouca luz. Tente em um ambiente mais claro.',
+    footer:{primary:'Tirar foto novamente', link:'Precisa de ajuda? Falar com o suporte'} },
+  { j:'onboarding', name:'Analisando identidade', img:'assets/analisando-identidade.png', header:{type:'progress', step:'Passo 3 de 3'},
+    title:'Analisando seus dados', subtitle:'Isso costuma levar menos de 1 minuto',
+    checklist:[{t:'Documento verificado', s:'done'},{t:'Selfie confirmada', s:'done'},{t:'Checagem de identidade', s:'active'}] },
+  { j:'onboarding', name:'Conta aprovada', img:'assets/conta-aprovada.png', header:{type:'none'}, icon:'ok',
+    title:'Conta liberada!', subtitle:'Agora é só começar a usar seu cartão e sua carteira Pulsa',
+    footer:{primary:'Ir para o app'} },
+  { j:'onboarding', name:'Em revisão manual', edge:true, img:'assets/em-revisao-manual.png', header:{type:'none'}, icon:'warn',
+    title:'Sua conta está em revisão', subtitle:'Nossa equipe analisa em até 24h úteis',
+    footer:{primary:'Fechar', state:'outline'} },
+  { j:'onboarding', name:'Reprovado + motivo', edge:true, img:'assets/reprovado-motivo.png', header:{type:'title', text:'Resultado', back:true}, icon:'warn',
+    title:'Não foi possível validar seu documento', subtitle:'A foto não bateu com os dados informados',
+    footer:{primary:'Tentar novamente', link:'Falar com o suporte'} },
+  { j:'onboarding', name:'Reenviar documento', edge:true, img:'assets/reenviar-documento.png', header:{type:'title', text:'Reenviar documentos', back:true},
+    title:'Novo documento', subtitle:'Envie uma foto nova, mais nítida', blocks:{count:1, variant:'dashed', label:'Toque para anexar'},
+    footer:{primary:'Enviar novamente', state:'disabled'} },
+  { j:'onboarding', name:'CPF já cadastrado', edge:true, img:'assets/cpf-ja-cadastrado.png', header:{type:'title', text:'Dados básicos', back:true}, icon:'warn',
+    title:'Esse CPF já tem uma conta', subtitle:'Recupere seu acesso pra continuar de onde parou',
+    footer:{primary:'Recuperar acesso', link:'Não é você? Falar com o suporte'} },
+  { j:'onboarding', name:'Reprovações consecutivas', edge:true, img:'assets/reprovacoes-consecutivas.png', header:{type:'title', text:'Verificação'}, icon:'warn',
+    title:'Vamos te ajudar por outro canal', subtitle:'Identificamos mais de uma tentativa sem sucesso',
+    footer:{primary:'Falar com o suporte agora', link:'Tentar enviar documentos de novo'} },
+
+  // ---------- CORE DO APP ----------
+  { j:'core', name:'Dashboard / Home', img:'assets/dashboard-home.png', header:{type:'greeting', text:'Olá, Renata 👋'},
+    value:{text:'R$ 1.842,30', label:'Saldo disponível'}, blocks:{count:1, variant:'plain', tall:true},
+    rows:[{l:'Mercado Pão de Açúcar', v:'- R$ 128,90'},{l:'Pix recebido', v:'+ R$ 500,00', pos:true},{l:'Uber', v:'- R$ 23,40'}],
+    footer:{tabs:'home'} },
+  { j:'core', name:'Extrato de transações', img:'assets/extrato-transacoes.png', header:{type:'title', text:'Extrato'},
+    tags:{items:['Todos','Entradas','Saídas','Este mês'], active:0},
+    rows:[{l:'Hoje', head:true},{l:'Mercado Pão de Açúcar', v:'- R$ 128,90'},{l:'Pix recebido de João', v:'+ R$ 500,00', pos:true},{l:'Ontem', head:true},{l:'Starbucks', v:'- R$ 24,50'}],
+    footer:{tabs:'statement'} },
+  { j:'core', name:'Detalhe de uma transação', img:'assets/detalhe-transacao.png', header:{type:'title', text:'Detalhes da transação', back:true},
+    icon:'shop', title:'Mercado Pão de Açúcar', value:{text:'- R$ 128,90'}, badge:'Concluída',
+    rows:[{l:'Data e hora', v:'11 ago, 14:20'},{l:'Categoria', v:'Alimentação'},{l:'ID', v:'PLS-2026-0234', mono:true}],
+    footer:{primary:'Contestar essa transação', state:'outline'} },
+  { j:'core', name:'Cartão (virtual/físico)', img:'assets/cartao.png', header:{type:'title', text:'Cartão'},
+    tags:{items:['Virtual','Físico'], active:0}, blocks:{count:1, variant:'plain', tall:true, label:'•••• •••• •••• 4821'},
+    rows:[{l:'Limite disponível', v:'R$ 2.180,00'}], footer:{tabs:'card'} },
+  { j:'core', name:'Perfil / dados da conta', img:'assets/perfil.png', header:{type:'title', text:'Perfil'}, avatar:'RC', title:'Renata Cassol',
+    rows:[{l:'Dados pessoais', plain:true},{l:'Segurança e senha', plain:true},{l:'Central de ajuda', plain:true},{l:'Sair da conta', plain:true, danger:true}],
+    footer:{tabs:'profile'} },
+  { j:'core', name:'Central de ajuda / suporte', img:'assets/central-de-ajuda.png', header:{type:'title', text:'Central de ajuda', back:true},
+    blocks:{count:1, variant:'plain', label:'Buscar por um assunto...'},
+    tags:{items:['Cartão','Transações','Conta','Crédito']},
+    rows:[{l:'Como contestar uma transação?', plain:true},{l:'Por que meu crédito foi recusado?', plain:true}] },
+
+  // ---------- RECARGA OMNICHANNEL ----------
+  { j:'recarga', name:'Escolher forma de recarga', img:'assets/escolher-forma-recarga.png', header:{type:'title', text:'Recarregar saldo', back:true},
+    cards:[{t:'Pix', s:'Saldo disponível na hora'},{t:'Ponto físico parceiro', s:'Lotéricas, farmácias e mercados'}] },
+  { j:'recarga', name:'Recarga via Pix', img:'assets/recarga-via-pix.png', header:{type:'title', text:'Recarga via Pix', back:true},
+    value:{text:'R$ 0,00'}, tags:{items:['R$50','R$100','R$200','R$500']}, blocks:{count:1, variant:'plain', label:'QR code'},
+    footer:{primary:'Confirmar valor'} },
+  { j:'recarga', name:'Confirmação instantânea (Pix)', img:'assets/confirmacao-instantanea-pix.png', header:{type:'none'}, icon:'ok',
+    title:'Recarga confirmada!', value:{text:'+ R$ 200,00', pos:true}, subtitle:'Já está disponível no seu saldo',
+    footer:{primary:'Voltar para o início'} },
+  { j:'recarga', name:'Recebido, confirmando', edge:true, img:'assets/recebido-confirmando.png', header:{type:'none'}, icon:'spinner',
+    title:'Recebemos seu Pix', subtitle:'Estamos confirmando o pagamento', value:{text:'R$ 200,00', dim:true},
+    footer:{primary:'Voltar para o início', state:'outline'} },
+  { j:'recarga', name:'Gerar código para ponto físico', img:'assets/gerar-codigo-ponto-fisico.png', header:{type:'title', text:'Recarga em ponto físico', back:true},
+    value:{text:'R$ 0,00'}, blocks:{count:1, variant:'plain', label:'Código de barras'},
+    footer:{primary:'Copiar código'} },
+  { j:'recarga', name:'Código expirado', edge:true, img:'assets/codigo-expirado.png', header:{type:'title', text:'Recarga em ponto físico', back:true},
+    icon:'warn', title:'Esse código expirou', subtitle:'Códigos são válidos por 24 horas',
+    footer:{primary:'Gerar novo código'} },
+  { j:'recarga', name:'Status: processando', img:'assets/status-processando.png', header:{type:'none'}, icon:'spinner',
+    title:'Pagamento recebido', subtitle:'Confirmando com o parceiro, até 2 horas', value:{text:'R$ 100,00', dim:true},
+    footer:{primary:'Voltar para o início', state:'outline'} },
+  { j:'recarga', name:'Divergência de valor', edge:true, img:'assets/divergencia-valor.png', header:{type:'title', text:'Recarga em ponto físico'},
+    icon:'warn', title:'Encontramos uma diferença no valor',
+    rows:[{l:'Código gerado', v:'R$ 200,00'},{l:'Valor recebido', v:'R$ 150,00'}],
+    footer:{primary:'Abrir contestação', link:'Isso é um engano, era o valor certo mesmo'} },
+  { j:'recarga', name:'Saldo atualizado', img:'assets/saldo-atualizado.png', header:{type:'none'}, icon:'ok',
+    title:'Saldo atualizado!', value:{text:'+ R$ 200,00', pos:true}, subtitle:'Sua recarga já está disponível',
+    footer:{primary:'Ir para o início'} },
+
+  // ---------- SOLICITAÇÃO DE CRÉDITO ----------
+  { j:'credito', name:'Solicitar limite/crédito', img:'assets/solicitar-limite.png', header:{type:'title', text:'Aumentar limite', back:true},
+    rows:[{l:'Limite atual', v:'R$ 1.200,00'}], value:{text:'R$ 0,00'},
+    footer:{primary:'Continuar'} },
+  { j:'credito', name:'Upload de documentos', img:'assets/upload-documentos.png', header:{type:'title', text:'Comprovar renda', back:true},
+    rows:[{l:'CCMEI', v:'+', plain:true},{l:'DASN-SIMEI', v:'+', plain:true},{l:'Extrato 3 meses', v:'Recomendado', pos:true}],
+    footer:{primary:'Continuar'} },
+  { j:'credito', name:'Autorizar Open Finance', img:'assets/autorizar-open-finance.png', header:{type:'title', text:'Melhore sua análise', back:true},
+    rows:[{l:'Análise mais rápida', plain:true},{l:'Maior chance de aprovação', plain:true},{l:'Dados seguros e revogáveis', plain:true}],
+    footer:{primary:'Autorizar Open Finance', link:'Pular essa etapa'} },
+  { j:'credito', name:'Analisando (loading)', img:'assets/analisando-credito.png', header:{type:'none'},
+    title:'Analisando sua solicitação', subtitle:'Isso costuma levar menos de 5 minutos',
+    checklist:[{t:'Documentos recebidos', s:'done'},{t:'Calculando score de renda', s:'active'},{t:'Decisão final', s:'pending'}] },
+  { j:'credito', name:'Aprovado', img:'assets/aprovado.png', header:{type:'none'}, icon:'ok',
+    title:'Limite aprovado!', value:{text:'R$ 3.500,00', pos:true}, subtitle:'Já está disponível no seu cartão',
+    footer:{primary:'Ver meu cartão'} },
+  { j:'credito', name:'Aprovado parcial', img:'assets/aprovado-parcial.png', header:{type:'none'}, icon:'ok-outline',
+    title:'Aprovamos um limite menor',
+    rows:[{l:'Você pediu', v:'R$ 5.000,00'},{l:'Aprovamos', v:'R$ 2.800,00', pos:true}],
+    footer:{primary:'Aceitar limite'} },
+  { j:'credito', name:'Recusado + motivo', img:'assets/recusado-motivo.png', header:{type:'title', text:'Resultado', back:true}, icon:'warn',
+    title:'Não conseguimos aprovar dessa vez', subtitle:'Sua DASN mostra renda menor. Pode estar desatualizada.',
+    footer:{primary:'Reenviar com extrato atualizado', link:'Falar com o suporte'} },
+  { j:'credito', name:'Divergência de renda', edge:true, img:'assets/divergencia-renda.png', header:{type:'title', text:'Análise em andamento', back:true},
+    icon:'warn', title:'Notamos uma diferença nos seus dados',
+    rows:[{l:'DASN (anual)', v:'R$ 1.800/mês'},{l:'Extrato recente', v:'R$ 3.200/mês', pos:true}],
+    footer:{primary:'Continuar análise'} },
+  { j:'credito', name:'Reenviar dados', edge:true, img:'assets/reenviar-dados.png', header:{type:'title', text:'Enviar extrato atualizado', back:true},
+    blocks:{count:1, variant:'dashed', label:'Toque para anexar o extrato'},
+    footer:{primary:'Enviar e analisar novamente', state:'disabled'} },
+  { j:'credito', name:'Bloqueio de reenvio idêntico', edge:true, img:'assets/bloqueio-reenvio-identico.png', header:{type:'title', text:'Enviar extrato atualizado', back:true},
+    icon:'warn', title:'Esse é o mesmo documento de antes', subtitle:'Envie um extrato mais recente',
+    footer:{primary:'Escolher outro arquivo'} },
+
+  // ---------- CONTESTAÇÃO DE TRANSAÇÃO ----------
+  { j:'contestacao', name:'Identificar transação', img:'assets/identificar-transacao.png', header:{type:'title', text:'Contestar uma transação', back:true},
+    rows:[{l:'Mercado Pão de Açúcar', v:'!'},{l:'Uber', v:'!'},{l:'Netflix', v:'!'}] },
+  { j:'contestacao', name:'Selecionar motivo', img:'assets/selecionar-motivo.png', header:{type:'title', text:'Qual o motivo?', back:true},
+    rows:[{l:'Não reconheço essa compra', plain:true},{l:'Fui cobrado em duplicidade', plain:true},{l:'Não recebi o produto', plain:true},{l:'Valor cobrado está errado', plain:true}],
+    footer:{primary:'Continuar', state:'disabled'} },
+  { j:'contestacao', name:'Anexar evidências', img:'assets/anexar-evidencias.png', header:{type:'title', text:'Anexar evidências (opcional)', back:true},
+    blocks:{count:1, variant:'dashed', label:'Toque para anexar arquivos'},
+    footer:{primary:'Enviar contestação'} },
+  { j:'contestacao', name:'Confirmação de abertura + prazo', img:'assets/confirmacao-abertura.png', header:{type:'none'}, icon:'ok',
+    title:'Contestação registrada', rows:[{l:'Protocolo', v:'CNT-2026-0811', mono:true},{l:'Prazo', v:'até 10 dias úteis'}],
+    footer:{primary:'Acompanhar status'} },
+  { j:'contestacao', name:'Acompanhar status', img:'assets/acompanhar-status.png', header:{type:'title', text:'Status da contestação', back:true},
+    checklist:[{t:'Contestação recebida', s:'done'},{t:'Em análise', s:'active'},{t:'Decisão', s:'pending'},{t:'Resolução', s:'pending'}],
+    footer:{primary:'Cancelar contestação', state:'outline'} },
+  { j:'contestacao', name:'Procedente → estorno automático', img:'assets/procedente-estorno.png', header:{type:'none'}, icon:'ok',
+    title:'Contestação aceita', value:{text:'+ R$ 128,90', pos:true}, subtitle:'O valor já foi devolvido ao seu saldo',
+    footer:{primary:'Voltar para o extrato'} },
+  { j:'contestacao', name:'Improcedente + motivo', img:'assets/improcedente-motivo.png', header:{type:'title', text:'Resultado', back:true}, icon:'warn',
+    title:'Não identificamos irregularidade', subtitle:'A transação foi confirmada com o estabelecimento',
+    footer:{primary:'Recorrer dessa decisão', link:'Reconheço a cobrança, encerrar'} },
+  { j:'contestacao', name:'Recorrer', img:'assets/recorrer.png', header:{type:'title', text:'Recorrer da decisão', back:true},
+    blocks:{count:1, variant:'dashed', label:'Anexar nova evidência (opcional)'},
+    footer:{primary:'Enviar recurso'} },
+  { j:'contestacao', name:'Contestação duplicada', edge:true, img:'assets/contestacao-duplicada.png', header:{type:'title', text:'Contestar transação', back:true},
+    icon:'warn', title:'Você já contestou essa transação', subtitle:'Já existe uma contestação em andamento',
+    footer:{primary:'Ver status dessa contestação'} },
+  { j:'contestacao', name:'Cancelar contestação', edge:true, img:'assets/cancelar-contestacao.png', header:{type:'title', text:'Cancelar contestação?'},
+    icon:'warn', title:'Tem certeza que quer cancelar?', subtitle:'Essa ação não pode ser desfeita',
+    footer:{primary:'Sim, cancelar contestação', link:'Voltar, manter contestação'} },
+];
+
+function esc(s){ return (s||'').toString(); }
+
+function renderHeader(h){
+  if(!h || h.type==='none') return `<div class="p-header">&nbsp;</div>`;
+  if(h.type==='wordmark') return `<div class="p-header" style="justify-content:center;">${esc(h.text)}</div>`;
+  if(h.type==='greeting') return `<div class="p-header">${esc(h.text)}</div>`;
+  if(h.type==='progress') return `<div class="p-header">${h.back?'<div class="back"></div>':''}<span style="flex:1;text-align:center;font-weight:500;color:var(--text-secondary);">${esc(h.step)}</span></div>`;
+  if(h.type==='title') return `<div class="p-header">${h.back?'<div class="back"></div>':''}<span>${esc(h.text)}</span></div>`;
+  return `<div class="p-header">&nbsp;</div>`;
+}
+
+function renderFooter(f){
+  if(!f) return '';
+  if(f.tabs){
+    const tabs = [['home','Início'],['statement','Extrato'],['card','Cartão'],['profile','Perfil']];
+    return `<div class="p-tabs">${tabs.map(([k,l])=>`<div class="p-tab ${f.tabs===k?'active':''}"><div class="ic"></div>${l}</div>`).join('')}</div>`;
+  }
+  let out = '';
+  if(f.primary){
+    const cls = f.state==='disabled' ? 'p-btn disabled' : f.state==='outline' ? 'p-btn ghost' : 'p-btn';
+    out += `<div class="${cls}">${esc(f.primary)}</div>`;
+  }
+  if(f.link) out += `<div class="p-link">${esc(f.link)}</div>`;
+  return out;
+}
+
+function renderScreen(s){
+  if(s.img){
+    return `<img src="${s.img}" alt="${esc(s.name)}" style="width:100%;height:auto;display:block;">`;
+  }
+  if(s.hero){
+    return `
+      <div class="p-header" style="justify-content:center;">Pulsa</div>
+      <div class="p-body">
+        <div style="flex:1;"></div>
+        <svg class="p-pulse-mini" viewBox="0 0 240 40"><path d="M0 20 L90 20 L104 6 L118 34 L132 10 L146 20 L240 20"/></svg>
+        <div class="p-title-c">Sua renda tem ritmo próprio.<br>Seu crédito também deveria ter.</div>
+        <div class="p-sub-c">Feito para freelancers, autônomos e MEIs.</div>
+        <div style="flex:1;"></div>
+        ${renderFooter(s.footer)}
+      </div>`;
+  }
+
+  let body = '';
+  if(s.icon){
+    const map = {ok:'✓','ok-outline':'✓',warn:'!',spinner:'⟳'};
+    const cls = s.icon==='ok-outline' ? 'p-icon-circle' : `p-icon-circle ${s.icon==='warn'?'warn':'ok'}`;
+    const style = s.icon==='ok-outline' ? 'style="background:transparent;border:2px solid var(--pink);color:var(--pink);"' : '';
+    body += `<div class="${cls}" ${style}>${map[s.icon]}</div>`;
+  }
+  if(s.avatar) body += `<div class="p-avatar-lg">${esc(s.avatar)}</div>`;
+  if(s.title) body += `<div class="p-title-c">${esc(s.title)}</div>`;
+  if(s.value) body += `<div class="p-value ${s.value.pos?'pos':''}" style="${s.value.dim?'color:var(--text-tertiary);':''}">${esc(s.value.text)}</div>`;
+  if(s.value && s.value.label) body += `<div class="p-sub-c">${esc(s.value.label)}</div>`;
+  if(s.badge) body += `<div class="p-badge">✓ ${esc(s.badge)}</div>`;
+  if(s.subtitle) body += `<div class="p-sub-c">${esc(s.subtitle)}</div>`;
+
+  if(s.tags){
+    body += `<div class="p-tag-row">${s.tags.items.map((t,i)=>`<div class="p-tag ${i===s.tags.active?'active':''}">${esc(t)}</div>`).join('')}</div>`;
+  }
+
+  if(s.cards){
+    body += `<div style="display:flex;flex-direction:column;gap:10px;">${s.cards.map(c=>`<div class="p-card-opt"><div class="t">${esc(c.t)}</div><div class="s">${esc(c.s)}</div></div>`).join('')}</div>`;
+  }
+
+  if(s.blocks){
+    const n = s.blocks.count || 1;
+    for(let i=0;i<n;i++){
+      if(s.blocks.variant==='dashed') body += `<div class="p-dashed">${esc(s.blocks.label||'')}</div>`;
+      else if(s.blocks.variant==='circle') body += `<div class="p-dashed circle">${esc(s.blocks.label||'')}</div>`;
+      else body += `<div class="p-block ${s.blocks.tall?'tall':''}" style="${s.blocks.label?'display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--text-tertiary);':''}">${esc(s.blocks.label||'')}</div>`;
+    }
+  }
+
+  if(s.checklist){
+    body += s.checklist.map(c=>{
+      const dotCls = c.s==='done'?'done':c.s==='active'?'active':'pending';
+      const dotChar = c.s==='done'?'✓':c.s==='active'?'':'';
+      return `<div class="p-check-row ${c.s==='pending'?'pending':''}"><div class="p-dot ${dotCls}">${dotChar}</div>${esc(c.t)}</div>`;
+    }).join('');
+  }
+
+  if(s.rows){
+    body += s.rows.map(r=>{
+      if(r.head) return `<div style="font-size:10.5px;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.04em;margin-top:4px;">${esc(r.l)}</div>`;
+      if(r.plain) return `<div class="p-row-plain" style="${r.danger?'color:#ef4444;':''}">${esc(r.l)}</div>`;
+      return `<div class="p-list-row"><span class="l">${esc(r.l)}</span><span class="r ${r.pos?'pos':''}" style="${r.mono?'font-family:var(--mono);font-size:11px;':''}">${esc(r.v)}</span></div>`;
+    }).join('');
+  }
+
+  return `
+    ${renderHeader(s.header)}
+    <div class="p-body">
+      ${body}
+      <div style="flex:1;"></div>
+      ${renderFooter(s.footer)}
+    </div>`;
+}
+
+const mount = document.getElementById('journeys-mount');
+JOURNEYS.forEach((jm, idx) => {
+  const screens = SCREENS.filter(s => s.j === jm.id);
+  const block = document.createElement('div');
+  block.className = 'journey-block';
+  block.innerHTML = `
+    <div class="jb-head">
+      <span class="jn">${String(idx+1).padStart(2,'0')} / 05</span>
+      <h3>${jm.label}</h3>
+      <span class="jc">${screens.length} telas</span>
+    </div>
+    <div class="phone-grid">
+      ${screens.map(s => `
+        <div>
+          <div class="${s.img ? 'phone-real' : 'phone'}"><div class="screen">${renderScreen(s)}</div></div>
+          <div class="phone-caption">
+            <div class="t">${esc(s.name)}</div>
+            ${s.edge ? '<div class="edge-tag">Edge case</div>' : ''}
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+  mount.appendChild(block);
+});
+</script>
+</body>
+</html>
